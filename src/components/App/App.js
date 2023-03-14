@@ -1,56 +1,48 @@
-import React, { Component } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import Searchbar from '../Searchbar';
 import ImageGallery from '../ImageGallery';
 import Modal from '../Modal';
+import { useState } from 'react';
 
-export class App extends Component {
-  state = {
-    query: '',
-    largeImageURL: '',
+export const App = () => {
+  const [query, setQuery] = useState('');
+  const [largeImageURL, setLargeImage] = useState('');
+
+  const onSubmit = newQuery => {
+    setQuery(newQuery);
   };
 
-  onSubmit = newQuery => {
-    this.setState({ query: newQuery });
+  const handleImageClick = image => {
+    setLargeImage(image);
   };
 
-  handleImageClick = image => {
-    this.setState({ largeImageURL: image });
+  const closeModal = () => {
+    setLargeImage('');
   };
 
-  closeModal = () => {
-    this.setState({ largeImageURL: '' });
-  };
+  return (
+    <div>
+      <Searchbar onSubmit={onSubmit} />
+      {query && <ImageGallery query={query} onImageClick={handleImageClick} />}
+      {largeImageURL && (
+        <Modal closeModal={closeModal}>
+          <img src={largeImageURL} alt="XXX" />
+        </Modal>
+      )}
 
-  render() {
-    const { query, largeImageURL } = this.state;
-
-    return (
-      <div>
-        <Searchbar onSubmit={this.onSubmit} />
-        {query && (
-          <ImageGallery query={query} onImageClick={this.handleImageClick} />
-        )}
-        {largeImageURL && (
-          <Modal closeModal={this.closeModal}>
-            <img src={largeImageURL} alt="XXX" />
-          </Modal>
-        )}
-
-        <ToastContainer
-          position="top-center"
-          autoClose={1000}
-          hideProgressBar={false}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-        />
-      </div>
-    );
-  }
-}
+      <ToastContainer
+        position="top-center"
+        autoClose={1000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+      />
+    </div>
+  );
+};
