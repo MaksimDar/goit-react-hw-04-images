@@ -24,7 +24,7 @@ export const App = () => {
   return (
     <div>
       <Searchbar onSubmit={onSubmit} />
-      {query && <ImageGallery query={query} onImageClick={handleImageClick} />}
+      {query && <ImageGallery queryProp={query} openImage={handleImageClick} />}
       {largeImageURL && (
         <Modal closeModal={closeModal}>
           <img src={largeImageURL} alt="XXX" />

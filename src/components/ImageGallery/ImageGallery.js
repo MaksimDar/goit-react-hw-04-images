@@ -9,7 +9,7 @@ import { ImageGalleryList } from './ImageGallery.styled';
 import Loader from '../Loader';
 import { useState, useEffect } from 'react';
 
-const ImageGallery = () => {
+const ImageGallery = ({ queryProp }) => {
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
   const [images, setImages] = useState([]);
@@ -20,7 +20,19 @@ const ImageGallery = () => {
   // async componentDidMount() {
   //   this.setState({ query: this.props.query });
   // }
-  useEffect(() => setQuery(this.props.query));
+  useEffect(() => {
+    setQuery(queryProp);
+    setPage(1);
+    setImages([]);
+    setTotalPages('');
+    setImageTag('');
+  }, [queryProp]);
+  useEffect(() => {
+    if (!query) {
+      return;
+    }
+    const
+  });
 
   // async componentDidUpdate(_, prevState) {
   //   const { query, page } = this.state;
@@ -105,17 +117,17 @@ const ImageGallery = () => {
   //   return;
   // }
 
-  handleButtonClick = () => {
-    if (this.state.totalPages === this.state.page) {
+  const handleButtonClick = () => {
+    if (totalPages === page) {
       toast.info('There is no more images');
       return;
     }
-    this.setState(({ page }) => ({ page: page + 1 }));
+    setPage(state => state + 1);
   };
 
-  onImageClick = id => {
+  const onImageClick = id => {
     this.props.onImageClick(
-      this.state.images.find(image => image.id === +id).largeImageURL
+      images.find(image => image.id === +id).largeImageURL
     );
   };
   return (
@@ -127,14 +139,14 @@ const ImageGallery = () => {
             image={image.webformatURL}
             id={image.id}
             onImageClick={id => {
-              this.onImageClick(id);
+              onImageClick(id);
             }}
             alt={imageTag}
           />
         ))}
       </ImageGalleryList>
       {isLoading && <Loader />}
-      {totalPages > 1 && <Button onClick={this.handleButtonClick} />}
+      {totalPages > 1 && <Button onClick={handleButtonClick} />}
     </>
   );
 };
