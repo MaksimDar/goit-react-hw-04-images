@@ -8,6 +8,7 @@ import { useState } from 'react';
 export const App = () => {
   const [query, setQuery] = useState('');
   const [largeImageURL, setLargeImage] = useState('');
+  const [tags, setTags] = useState('');
 
   const onSubmit = newQuery => {
     setQuery(newQuery);
