@@ -31,8 +31,29 @@ const ImageGallery = ({ queryProp }) => {
     if (!query) {
       return;
     }
-    const
-  });
+    const fetchData = async () => {
+      try {
+        setIsLoading(true);
+        const response = await getPhotos(query, page);
+        const totalPages = Math.ceil(response.totalHits / 12);
+        const imagesArray = response.hits.map(
+          ({ id, webformatURL, largeImageURL, tags }) => ({
+            id,
+            webformatURL,
+            largeImageURL,
+            tags,
+          })
+        );
+        setImages(prevState => [...prevState, imagesArray]);
+        setTotalPages(totalPages);
+      } catch {
+        toast.error('Something went wrong!');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    fetchData();
+  }, [query, page]);
 
   // async componentDidUpdate(_, prevState) {
   //   const { query, page } = this.state;
@@ -64,44 +85,11 @@ const ImageGallery = ({ queryProp }) => {
 
   //     return;
   //   }
-
-  //   if (prevState.page !== page) {
-  //     try {
-  //       this.setState({ isLoading: true });
-  //       const response = await getPhotos(query, page);
-  //       const newImagesArray = response.hits.map(
-  //         ({ id, webformatURL, largeImageURL }) => ({
-  //           id,
-  //           webformatURL,
-  //           largeImageURL,
-  //         })
-  //       );
-
-  //       this.setState(prevState => ({
-  //         images: [...prevState.images, ...newImagesArray],
-  //       }));
-  //     } catch (error) {
-  //       console.log(error);
-  //       toast.error('Something went wrong!');
-  //     } finally {
-  //       this.setState({ isLoading: false });
-  //     }
-  //     return;
-  //   }
-
-  //   if (query !== this.props.query) {
-  //     this.setState({
-  //       query: this.props.query,
-  //       page: 1,
-  //       images: [],
-  //       totalPages: null,
-  //     });
-  //     return;
-  //   }
-
-  //   if (prevState === this.state) {
-  //     return;
-  //   }
+  useEffect(() => {
+    if (prevState>1) {
+      const{height:cardHeight}=
+    }
+  });
 
   //   if (prevState.page > 1) {
   //     const { height: cardHeight } = document
