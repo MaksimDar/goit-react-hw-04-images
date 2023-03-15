@@ -1,13 +1,15 @@
+import React, { useState } from 'react';
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+
+import css from './App.module.css';
 import Searchbar from '../Searchbar';
 import ImageGallery from '../ImageGallery';
 import Modal from '../Modal';
-import { useState } from 'react';
 
 export const App = () => {
   const [query, setQuery] = useState('');
-  const [largeImageURL, setLargeImage] = useState('');
+  const [largeImageURL, setlargeImageURL] = useState('');
   const [tags, setTags] = useState('');
 
   const onSubmit = newQuery => {
@@ -15,25 +17,26 @@ export const App = () => {
   };
 
   const handleImageClick = (image, imageTag) => {
-    setLargeImage(image);
+    setlargeImageURL(image);
     setTags(imageTag);
   };
 
   const closeModal = () => {
-    setLargeImage('');
+    setlargeImageURL('');
     setTags('');
   };
 
   return (
-    <div>
+    <div className={css.App}>
       <Searchbar onSubmit={onSubmit} />
-      {query && <ImageGallery queryProp={query} openImage={handleImageClick} />}
+      {query && (
+        <ImageGallery searchQuery={query} openModalImage={handleImageClick} />
+      )}
       {largeImageURL && (
         <Modal closeModal={closeModal}>
           <img src={largeImageURL} alt={tags} />
         </Modal>
       )}
-
       <ToastContainer
         position="top-center"
         autoClose={1000}
