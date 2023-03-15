@@ -13,15 +13,13 @@ const ImageGallery = ({ queryProp, openModal }) => {
   const [images, setImages] = useState([]);
   const [totalPages, setTotalPages] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [imageTag, setImageTag] = useState('');
 
-  const loadMore = useRef();
+  const loadMore = useRef(false);
   useEffect(() => {
     setQuery(queryProp);
     setPage(1);
     setImages([]);
     setTotalPages('');
-    setImageTag('');
   }, [queryProp]);
   useEffect(() => {
     if (!query) {
@@ -37,7 +35,7 @@ const ImageGallery = ({ queryProp, openModal }) => {
             id,
             webformatURL,
             largeImageURL,
-            tags,
+            imageTag: tags,
           })
         );
         setImages(prevState => [...prevState, imagesArray]);
@@ -51,7 +49,7 @@ const ImageGallery = ({ queryProp, openModal }) => {
     fetchData();
   }, [query, page]);
   useEffect(() => {
-    if (page > 1) {
+    if (page > 1 && loadMore.current) {
       const { height: cardHeight } = document
         .querySelector('ul')
         .firstElementChild.getBoundingClientRect();
@@ -86,7 +84,7 @@ const ImageGallery = ({ queryProp, openModal }) => {
             onImageClick={id => {
               onImageClick(id);
             }}
-            alt={imageTag}
+            alt={image.imageTag}
           />
         ))}
       </ImageGalleryList>
@@ -98,4 +96,4 @@ const ImageGallery = ({ queryProp, openModal }) => {
 
 export default ImageGallery;
 
-ImageGallery.propTypes = { query: PropTypes.string };
+ImageGallery.propTypes = { queryProp: PropTypes.string };

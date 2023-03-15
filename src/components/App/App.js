@@ -14,12 +14,14 @@ export const App = () => {
     setQuery(newQuery);
   };
 
-  const handleImageClick = image => {
+  const handleImageClick = (image, imageTag) => {
     setLargeImage(image);
+    setTags(imageTag);
   };
 
   const closeModal = () => {
     setLargeImage('');
+    setTags('');
   };
 
   return (
@@ -28,7 +30,7 @@ export const App = () => {
       {query && <ImageGallery queryProp={query} openImage={handleImageClick} />}
       {largeImageURL && (
         <Modal closeModal={closeModal}>
-          <img src={largeImageURL} alt="XXX" />
+          <img src={largeImageURL} alt={tags} />
         </Modal>
       )}
 
